@@ -1,9 +1,9 @@
 package com.rodarte.musicapp.models.service;
 
 import com.rodarte.musicapp.models.entity.Band;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface BandService {
-    List<Band> getAllBands();
+    Page<Band> getAllBands(PageRequest request);
 }

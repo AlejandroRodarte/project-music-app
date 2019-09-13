@@ -3,9 +3,9 @@ package com.rodarte.musicapp.models.service;
 import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.entity.Band;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BandServiceImpl implements BandService {
@@ -14,8 +14,8 @@ public class BandServiceImpl implements BandService {
     private BandDao bandDao;
 
     @Override
-    public List<Band> getAllBands() {
-        return bandDao.findAll();
+    public Page<Band> getAllBands(PageRequest request) {
+        return bandDao.findAll(request);
     }
 
 }
