@@ -6,7 +6,7 @@ USE music_db;
 CREATE TABLE IF NOT EXISTS bands (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    image_url VARCHAR(255) NOT NULL,
+    image_path VARCHAR(255) NOT NULL,
     origin_country VARCHAR(255) NOT NULL,
     origin_year INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
