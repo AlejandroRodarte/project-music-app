@@ -2,10 +2,16 @@ package com.rodarte.musicapp.models.service;
 
 import com.rodarte.musicapp.models.entity.Band;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
-import java.util.Map;
+import java.util.List;
 
 public interface BandService {
-    Page<Band> getAllBands(PageRequest request, Map<String, String> searchParams);
+    Page<Band> getAllBands(
+            Integer page,
+            Integer size,
+            String sort,
+            String name,
+            String country,
+            List<String> yearRange
+    );
 }
