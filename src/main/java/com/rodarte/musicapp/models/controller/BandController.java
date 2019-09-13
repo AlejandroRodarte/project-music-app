@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/bands")
 public class BandController {
@@ -22,7 +26,10 @@ public class BandController {
     public Page<Band> getAllBands(
             @RequestParam Integer page,
             @RequestParam Integer size,
-            @RequestParam String sort
+            @RequestParam String sort,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) List<Integer> yearRange
     ) {
 
         String[] sortArr = sort.split(":");
@@ -32,13 +39,20 @@ public class BandController {
 
         Sort.Direction direction;
 
+        Map<String, String> searchParams = new LinkedHashMap<>();
+
+        searchParams.put("name", name);
+        searchParams.put("country", country);
+        searchParams.put("startYear", yearRange.get(0).toString());
+        searchParams.put("endYear", yearRange.get(1).toString());
+
         if (sortDirection.equals("asc")) {
             direction = Sort.Direction.ASC;
         } else {
             direction = Sort.Direction.DESC;
         }
 
-        return bandService.getAllBands(PageRequest.of(page, size, Sort.by(direction, sortParam)));
+        return bandService.getAllBands(PageRequest.of(page, size, Sort.by(direction, sortParam)), searchParams);
 
     }
 
