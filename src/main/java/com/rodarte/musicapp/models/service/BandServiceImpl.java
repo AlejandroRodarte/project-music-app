@@ -7,8 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BandServiceImpl implements BandService {
@@ -17,6 +19,7 @@ public class BandServiceImpl implements BandService {
     private BandDao bandDao;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Band> getBands(
             Integer page,
             Integer size,
@@ -47,6 +50,24 @@ public class BandServiceImpl implements BandService {
                 PageRequest.of(page, size, Sort.by(direction, sortParam))
         );
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Band> getBand(Long id) {
+        return bandDao.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public Band saveBand(Band band) {
+        return bandDao.save(band);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBandById(Long id) {
+        bandDao.deleteById(id);
     }
 
 }

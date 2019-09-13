@@ -30,6 +30,16 @@ public class Band {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @PrePersist
+    public void prePersist() {
+        createdAt = new Date();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = new Date();
+    }
+
     public Band() {
     }
 
