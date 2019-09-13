@@ -20,8 +20,8 @@ public class BandServiceImpl implements BandService {
         return bandDao.findBySearchParams(
                 searchParams.get("name"),
                 searchParams.get("country"),
-                Integer.parseInt(searchParams.get("startYear")),
-                Integer.parseInt(searchParams.get("endYear")),
+                searchParams.get("startYear") == null ? null : Integer.parseInt(searchParams.get("startYear")),
+                searchParams.get("endYear") == null ? null : Integer.parseInt(searchParams.get("endYear")),
                 request
         );
     }

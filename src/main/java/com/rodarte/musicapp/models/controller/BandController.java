@@ -43,8 +43,14 @@ public class BandController {
 
         searchParams.put("name", name);
         searchParams.put("country", country);
-        searchParams.put("startYear", yearRange.get(0).toString());
-        searchParams.put("endYear", yearRange.get(1).toString());
+
+        if (yearRange == null) {
+            searchParams.put("startYear", null);
+            searchParams.put("endYear", null);
+        } else {
+            searchParams.put("startYear", yearRange.get(0).toString());
+            searchParams.put("endYear", yearRange.get(1).toString());
+        }
 
         if (sortDirection.equals("asc")) {
             direction = Sort.Direction.ASC;
