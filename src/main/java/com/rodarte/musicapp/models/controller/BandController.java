@@ -19,7 +19,7 @@ public class BandController {
     private BandService bandService;
 
     @GetMapping
-    public Page<Band> getAllBands(
+    public Page<Band> getBands(
             @RequestParam Integer page,
             @RequestParam Integer size,
             @RequestParam String sort,
@@ -28,7 +28,7 @@ public class BandController {
             @RequestParam(required = false) List<String> yearRange
     ) {
 
-        return bandService.getAllBands(page, size, sort, name, country, yearRange);
+        return bandService.getBands(page, size, sort, name, country, yearRange);
 
     }
 

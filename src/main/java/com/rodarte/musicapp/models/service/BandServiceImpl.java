@@ -17,7 +17,7 @@ public class BandServiceImpl implements BandService {
     private BandDao bandDao;
 
     @Override
-    public Page<Band> getAllBands(
+    public Page<Band> getBands(
             Integer page,
             Integer size,
             String sort,

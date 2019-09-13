@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface BandService {
-    Page<Band> getAllBands(
+    Page<Band> getBands(
             Integer page,
             Integer size,
             String sort,
