@@ -31,12 +31,12 @@ public class BandServiceImpl implements BandService {
     @Override
     @Transactional(readOnly = true)
     public BandsDto getBands(
-            Integer page,
-            Integer size,
-            String sort,
-            String name,
-            String country,
-            List<String> yearRange
+        Integer page,
+        Integer size,
+        String sort,
+        String name,
+        String country,
+        List<String> yearRange
     ) {
 
         String[] sortArr = sort.split(":");

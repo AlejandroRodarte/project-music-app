@@ -13,11 +13,11 @@ public interface BandDao extends JpaRepository<Band, Long> {
             "(:country is null OR b.originCountry LIKE :country%) AND (:startYear is null OR b.originYear >= :startYear) " +
             "AND (:endYear is null OR b.originYear <= :endYear)")
     Page<Band> findBySearchParams(
-            @Param("name") String name,
-            @Param("country") String country,
-            @Param("startYear") Integer startYear,
-            @Param("endYear") Integer endYear,
-            Pageable pageable
+        @Param("name") String name,
+        @Param("country") String country,
+        @Param("startYear") Integer startYear,
+        @Param("endYear") Integer endYear,
+        Pageable pageable
     );
 
 }

@@ -34,7 +34,7 @@ public class Album {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
     @JoinColumn(name = "band_id")
     private Band band;
 
