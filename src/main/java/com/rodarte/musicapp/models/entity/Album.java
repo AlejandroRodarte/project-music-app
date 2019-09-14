@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "bands")
-public class Band {
+@Table(name = "albums")
+public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +20,8 @@ public class Band {
     @Column(name = "image_path")
     private String imagePath;
 
-    @Column(name = "origin_country")
-    private String originCountry;
-
-    @Column(name = "origin_year")
-    private Integer originYear;
+    @Column(name = "release_year")
+    private Integer releaseYear;
 
     @Column(name = "created_at")
     private Date createdAt;
@@ -33,9 +29,10 @@ public class Band {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "band")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumn(name = "band_id")
     @JsonIgnore
-    private List<Album> albums;
+    private Band band;
 
     @PrePersist
     public void prePersist() {
@@ -47,14 +44,13 @@ public class Band {
         updatedAt = new Date();
     }
 
-    public Band() {
+    public Album() {
     }
 
-    public Band(String name, String imagePath, String originCountry, Integer originYear) {
+    public Album(String name, String imagePath, Integer releaseYear) {
         this.name = name;
         this.imagePath = imagePath;
-        this.originCountry = originCountry;
-        this.originYear = originYear;
+        this.releaseYear = releaseYear;
     }
 
     public Long getId() {
@@ -81,20 +77,12 @@ public class Band {
         this.imagePath = imagePath;
     }
 
-    public String getOriginCountry() {
-        return originCountry;
+    public Integer getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setOriginCountry(String originCountry) {
-        this.originCountry = originCountry;
-    }
-
-    public Integer getOriginYear() {
-        return originYear;
-    }
-
-    public void setOriginYear(Integer originYear) {
-        this.originYear = originYear;
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     public Date getCreatedAt() {
@@ -113,12 +101,12 @@ public class Band {
         this.updatedAt = updatedAt;
     }
 
-    public List<Album> getAlbums() {
-        return albums;
+    public Band getBand() {
+        return band;
     }
 
-    public void setAlbums(List<Album> albums) {
-        this.albums = albums;
+    public void setBand(Band band) {
+        this.band = band;
     }
 
 }
