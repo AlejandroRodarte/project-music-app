@@ -1,14 +1,14 @@
 package com.rodarte.musicapp.models.controller;
 
+import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.service.BandService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bands")
@@ -17,64 +17,59 @@ public class BandController {
     @Autowired
     private BandService bandService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<Band> getBands(
-            @RequestParam Integer page,
-            @RequestParam Integer size,
-            @RequestParam String sort,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String country,
-            @RequestParam(required = false) List<String> yearRange
+    public List<BandDto> getBands(
+        @RequestParam Integer page,
+        @RequestParam Integer size,
+        @RequestParam String sort,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String country,
+        @RequestParam(required = false) List<String> yearRange
     ) {
 
-        Page<Band> bands = bandService.getBands(page, size, sort, name, country, yearRange);
+        List<BandDto> bandDtos = bandService.getBands(page, size, sort, name, country, yearRange);
 
-        for (Band band : bands.getContent()) {
+        for (BandDto band : bandDtos) {
             Integer albumCount = bandService.albumCountByBandId(band.getId());
             band.setAlbumCount(albumCount);
         }
 
-        return bands;
+        return bandDtos;
 
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Band getBand(@PathVariable Long id) {
+    public BandDto getBand(@PathVariable Long id) {
 
-        Optional<Band> band = bandService.getBand(id);
-
-        if (band.isEmpty()) {
-            throw new RuntimeException("Band not found.");
-        }
+        BandDto band = bandService.getBand(id);
 
         Integer albumCount = bandService.albumCountByBandId(id);
-        band.get().setAlbumCount(albumCount);
+        band.setAlbumCount(albumCount);
 
-        return band.get();
+        return band;
 
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Band saveBand(@RequestBody Band band) {
+    public BandDto saveBand(@RequestBody Band band) {
         return bandService.saveBand(band);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Band updateBand(@RequestBody Band updatedBand, @PathVariable Long id) {
+    public BandDto updateBand(@RequestBody Band updatedBand, @PathVariable Long id) {
 
-        Optional<Band> bandToUpdate = bandService.getBand(id);
+        BandDto bandToUpdate = bandService.getBand(id);
 
-        if (bandToUpdate.isEmpty()) {
-            throw new RuntimeException("Band not found.");
-        }
+        updateBand(bandToUpdate, updatedBand);
 
-        updateBand(bandToUpdate.get(), updatedBand);
-
-        return bandService.saveBand(bandToUpdate.get());
+        return bandService.saveBand(modelMapper.map(bandToUpdate, Band.class));
 
     }
 
@@ -84,7 +79,7 @@ public class BandController {
         bandService.deleteBandById(id);
     }
 
-    private void updateBand(Band bandToUpdate, Band updatedBand) {
+    private void updateBand(BandDto bandToUpdate, Band updatedBand) {
 
         if (updatedBand.getName() != null) {
             bandToUpdate.setName(updatedBand.getName());

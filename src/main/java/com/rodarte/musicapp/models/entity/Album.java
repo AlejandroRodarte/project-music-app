@@ -1,12 +1,17 @@
 package com.rodarte.musicapp.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "albums")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id"
+)
 public class Album {
 
     @Id
@@ -31,7 +36,6 @@ public class Album {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
     @JoinColumn(name = "band_id")
-    @JsonIgnore
     private Band band;
 
     @PrePersist

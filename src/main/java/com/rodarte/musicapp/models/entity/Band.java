@@ -1,6 +1,7 @@
 package com.rodarte.musicapp.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,6 +9,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "bands")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id"
+)
 public class Band {
 
     @Id
@@ -34,11 +39,7 @@ public class Band {
     private Date updatedAt;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "band")
-    @JsonIgnore
     private List<Album> albums;
-
-    @Transient
-    private Integer albumCount;
 
     @PrePersist
     public void prePersist() {
@@ -122,14 +123,6 @@ public class Band {
 
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
-    }
-
-    public Integer getAlbumCount() {
-        return albumCount;
-    }
-
-    public void setAlbumCount(Integer albumCount) {
-        this.albumCount = albumCount;
     }
 
 }

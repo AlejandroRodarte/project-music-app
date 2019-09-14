@@ -2,16 +2,17 @@ package com.rodarte.musicapp.models.service;
 
 import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.BandDao;
+import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.entity.Band;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BandServiceImpl implements BandService {
@@ -22,9 +23,12 @@ public class BandServiceImpl implements BandService {
     @Autowired
     private AlbumDao albumDao;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     @Transactional(readOnly = true)
-    public Page<Band> getBands(
+    public List<BandDto> getBands(
             Integer page,
             Integer size,
             String sort,
@@ -52,20 +56,20 @@ public class BandServiceImpl implements BandService {
             yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
             yearRange == null ? null : Integer.parseInt(yearRange.get(1)),
             PageRequest.of(page, size, Sort.by(direction, sortParam))
-        );
+        ).stream().map(band -> modelMapper.map(band, BandDto.class)).collect(Collectors.toList());
 
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Band> getBand(Long id) {
-        return bandDao.findById(id);
+    public BandDto getBand(Long id) {
+        return modelMapper.map(bandDao.findById(id).get(), BandDto.class);
     }
 
     @Override
     @Transactional
-    public Band saveBand(Band band) {
-        return bandDao.save(band);
+    public BandDto saveBand(Band band) {
+        return modelMapper.map(bandDao.save(band), BandDto.class);
     }
 
     @Override

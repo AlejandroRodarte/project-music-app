@@ -1,14 +1,13 @@
 package com.rodarte.musicapp.models.service;
 
+import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.entity.Band;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BandService {
 
-    Page<Band> getBands(
+    List<BandDto> getBands(
         Integer page,
         Integer size,
         String sort,
@@ -17,9 +16,9 @@ public interface BandService {
         List<String> yearRange
     );
 
-    Optional<Band> getBand(Long id);
+    BandDto getBand(Long id);
 
-    Band saveBand(Band band);
+    BandDto saveBand(Band band);
 
     void deleteBandById(Long id);
 
