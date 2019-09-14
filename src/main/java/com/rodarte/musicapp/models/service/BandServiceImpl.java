@@ -1,5 +1,6 @@
 package com.rodarte.musicapp.models.service;
 
+import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.entity.Band;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class BandServiceImpl implements BandService {
 
     @Autowired
     private BandDao bandDao;
+
+    @Autowired
+    private AlbumDao albumDao;
 
     @Override
     @Transactional(readOnly = true)
@@ -55,6 +59,7 @@ public class BandServiceImpl implements BandService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Band> getBand(Long id) {
+        System.out.println(albumDao.countAlbumsByBandId(id));
         return bandDao.findById(id);
     }
 
