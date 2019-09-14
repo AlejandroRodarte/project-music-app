@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS albums (
     release_year INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW(),
-    band_id INT NOT NULL,
+    band_id INT,
     FOREIGN KEY(band_id) REFERENCES bands(id)
 );
 
@@ -31,7 +31,7 @@ CREATE TABLE songs (
     duration INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP ON UPDATE NOW(),
-    album_id INT NOT NULL,
+    album_id INT,
     FOREIGN KEY (album_id) REFERENCES albums(id)
 );
 
