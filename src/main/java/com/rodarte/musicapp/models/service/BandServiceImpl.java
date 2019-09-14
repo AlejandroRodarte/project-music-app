@@ -3,9 +3,11 @@ package com.rodarte.musicapp.models.service;
 import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.dto.BandDto;
+import com.rodarte.musicapp.models.dto.BandsDto;
 import com.rodarte.musicapp.models.entity.Band;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class BandServiceImpl implements BandService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BandDto> getBands(
+    public BandsDto getBands(
             Integer page,
             Integer size,
             String sort,
@@ -50,13 +52,22 @@ public class BandServiceImpl implements BandService {
             direction = Sort.Direction.DESC;
         }
 
-        return bandDao.findBySearchParams(
+        Page<Band> bands = bandDao.findBySearchParams(
             name,
             country,
             yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
             yearRange == null ? null : Integer.parseInt(yearRange.get(1)),
             PageRequest.of(page, size, Sort.by(direction, sortParam))
-        ).stream().map(band -> modelMapper.map(band, BandDto.class)).collect(Collectors.toList());
+        );
+
+        Boolean hasNext = bands.hasNext();
+        Boolean hasPrevious = bands.hasPrevious();
+
+        List<BandDto> bandDtos = bands.stream()
+                .map(band -> modelMapper.map(band, BandDto.class))
+                .collect(Collectors.toList());
+
+        return new BandsDto(bandDtos, hasNext, hasPrevious);
 
     }
 
@@ -79,6 +90,7 @@ public class BandServiceImpl implements BandService {
     }
 
     @Override
+    @Transactional
     public Integer albumCountByBandId(Long bandId) {
         return albumDao.countAlbumsByBandId(bandId);
     }

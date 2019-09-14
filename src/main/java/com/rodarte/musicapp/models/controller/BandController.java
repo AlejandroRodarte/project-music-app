@@ -1,6 +1,7 @@
 package com.rodarte.musicapp.models.controller;
 
 import com.rodarte.musicapp.models.dto.BandDto;
+import com.rodarte.musicapp.models.dto.BandsDto;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.service.BandService;
 import org.modelmapper.ModelMapper;
@@ -22,7 +23,7 @@ public class BandController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<BandDto> getBands(
+    public BandsDto getBands(
         @RequestParam Integer page,
         @RequestParam Integer size,
         @RequestParam String sort,
@@ -31,14 +32,14 @@ public class BandController {
         @RequestParam(required = false) List<String> yearRange
     ) {
 
-        List<BandDto> bandDtos = bandService.getBands(page, size, sort, name, country, yearRange);
+        BandsDto bandsDto = bandService.getBands(page, size, sort, name, country, yearRange);
 
-        for (BandDto band : bandDtos) {
+        for (BandDto band : bandsDto.getContent()) {
             Integer albumCount = bandService.albumCountByBandId(band.getId());
             band.setAlbumCount(albumCount);
         }
 
-        return bandDtos;
+        return bandsDto;
 
     }
 
