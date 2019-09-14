@@ -4,6 +4,7 @@ import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.dto.BandsDto;
+import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.Band;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,7 +82,18 @@ public class BandServiceImpl implements BandService {
     @Override
     @Transactional
     public BandDto saveBand(Band band) {
+
+        List<Album> albums = new ArrayList<>();
+
+        for (Long id : band.getAlbums().stream().map(Album::getId).collect(Collectors.toList())) {
+            Album album = albumDao.findById(id).get();
+            albums.add(album);
+        }
+
+        band.setAlbums(albums);
+
         return modelMapper.map(bandDao.save(band), BandDto.class);
+
     }
 
     @Override
