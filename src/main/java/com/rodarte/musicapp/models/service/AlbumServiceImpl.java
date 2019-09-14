@@ -1,6 +1,7 @@
 package com.rodarte.musicapp.models.service;
 
 import com.rodarte.musicapp.models.dao.AlbumDao;
+import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.dto.AlbumDto;
 import com.rodarte.musicapp.models.dto.AlbumsDto;
 import com.rodarte.musicapp.models.dto.BandToAlbumDto;
@@ -12,12 +13,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
+
+    @Autowired
+    private BandDao bandDao;
 
     @Autowired
     private AlbumDao albumDao;
@@ -31,6 +36,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    @Transactional
     public AlbumsDto getAlbums(
         Integer page,
         Integer size,
@@ -67,12 +73,32 @@ public class AlbumServiceImpl implements AlbumService {
         List<AlbumDto> albumDtos = albums.stream()
             .map(album -> {
                 AlbumDto albumDto = modelMapper.map(album, AlbumDto.class);
-                Band band = album.getBand();
-                albumDto.setBand(modelMapper.map(band, BandToAlbumDto.class));
+                albumDto.setBand(modelMapper.map(album.getBand(), BandToAlbumDto.class));
                 return albumDto;
             }).collect(Collectors.toList());
 
         return new AlbumsDto(albumDtos, hasNext, hasPrevious);
 
     }
+
+    @Override
+    @Transactional
+    public AlbumDto getAlbum(Long id) {
+        return modelMapper.map(albumDao.findById(id).get(), AlbumDto.class);
+    }
+
+    @Override
+    @Transactional
+    public AlbumDto saveAlbum(Album album, boolean setBandId) {
+        Band foundBand = bandDao.findById(album.getBand().getId()).get();
+        album.setBand(foundBand);
+        return modelMapper.map(albumDao.save(album), AlbumDto.class);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAlbumById(Long id) {
+        albumDao.deleteById(id);
+    }
+
 }
