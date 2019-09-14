@@ -59,7 +59,6 @@ public class BandServiceImpl implements BandService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Band> getBand(Long id) {
-        System.out.println(albumDao.countAlbumsByBandId(id));
         return bandDao.findById(id);
     }
 
@@ -73,6 +72,11 @@ public class BandServiceImpl implements BandService {
     @Transactional
     public void deleteBandById(Long id) {
         bandDao.deleteById(id);
+    }
+
+    @Override
+    public Integer albumCountByBandId(Long bandId) {
+        return albumDao.countAlbumsByBandId(bandId);
     }
 
 }

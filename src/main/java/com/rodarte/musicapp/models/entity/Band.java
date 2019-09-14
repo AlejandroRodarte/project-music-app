@@ -37,6 +37,9 @@ public class Band {
     @JsonIgnore
     private List<Album> albums;
 
+    @Transient
+    private Integer albumCount;
+
     @PrePersist
     public void prePersist() {
         createdAt = new Date();
@@ -119,6 +122,14 @@ public class Band {
 
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
+    }
+
+    public Integer getAlbumCount() {
+        return albumCount;
+    }
+
+    public void setAlbumCount(Integer albumCount) {
+        this.albumCount = albumCount;
     }
 
 }

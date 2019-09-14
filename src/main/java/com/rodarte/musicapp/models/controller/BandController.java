@@ -27,7 +27,16 @@ public class BandController {
             @RequestParam(required = false) String country,
             @RequestParam(required = false) List<String> yearRange
     ) {
-        return bandService.getBands(page, size, sort, name, country, yearRange);
+
+        Page<Band> bands = bandService.getBands(page, size, sort, name, country, yearRange);
+
+        for (Band band : bands.getContent()) {
+            Integer albumCount = bandService.albumCountByBandId(band.getId());
+            band.setAlbumCount(albumCount);
+        }
+
+        return bands;
+
     }
 
     @GetMapping("/{id}")
@@ -39,6 +48,9 @@ public class BandController {
         if (band.isEmpty()) {
             throw new RuntimeException("Band not found.");
         }
+
+        Integer albumCount = bandService.albumCountByBandId(id);
+        band.get().setAlbumCount(albumCount);
 
         return band.get();
 

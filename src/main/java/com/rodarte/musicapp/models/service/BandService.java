@@ -23,4 +23,6 @@ public interface BandService {
 
     void deleteBandById(Long id);
 
+    Integer albumCountByBandId(Long bandId);
+
 }
