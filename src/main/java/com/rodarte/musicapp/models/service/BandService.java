@@ -9,12 +9,12 @@ import java.util.Optional;
 public interface BandService {
 
     Page<Band> getBands(
-            Integer page,
-            Integer size,
-            String sort,
-            String name,
-            String country,
-            List<String> yearRange
+        Integer page,
+        Integer size,
+        String sort,
+        String name,
+        String country,
+        List<String> yearRange
     );
 
     Optional<Band> getBand(Long id);

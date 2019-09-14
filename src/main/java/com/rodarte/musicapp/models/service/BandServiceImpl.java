@@ -47,11 +47,11 @@ public class BandServiceImpl implements BandService {
         }
 
         return bandDao.findBySearchParams(
-                name,
-                country,
-                yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
-                yearRange == null ? null : Integer.parseInt(yearRange.get(1)),
-                PageRequest.of(page, size, Sort.by(direction, sortParam))
+            name,
+            country,
+            yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
+            yearRange == null ? null : Integer.parseInt(yearRange.get(1)),
+            PageRequest.of(page, size, Sort.by(direction, sortParam))
         );
 
     }
