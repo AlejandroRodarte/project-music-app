@@ -33,7 +33,7 @@ public class AlbumServiceImpl implements AlbumService {
     private AlbumViewDao albumViewDao;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<AlbumView> getAlbums(
         Integer page,
         Integer size,

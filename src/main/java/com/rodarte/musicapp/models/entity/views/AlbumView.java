@@ -22,7 +22,7 @@ public class AlbumView implements Serializable {
     private String imagePath;
 
     @Column(name = "release_year")
-    private String releaseYear;
+    private Integer releaseYear;
 
     @Column(name = "band_id")
     private Long bandId;
@@ -60,11 +60,11 @@ public class AlbumView implements Serializable {
         this.imagePath = imagePath;
     }
 
-    public String getReleaseYear() {
+    public Integer getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(String releaseYear) {
+    public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
     }
 

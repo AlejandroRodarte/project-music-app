@@ -56,7 +56,7 @@ public class BandServiceImpl implements BandService {
             direction = Sort.Direction.DESC;
         }
 
-        Page<BandView> bands = bandViewDao.findAllBySearchParams(
+        return bandViewDao.findAllBySearchParams(
             name,
             country,
             yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
@@ -67,8 +67,6 @@ public class BandServiceImpl implements BandService {
             songRange == null ? null : Integer.parseInt(songRange.get(1)),
             PageRequest.of(page, size, Sort.by(direction, sortParam))
         );
-
-        return bands;
 
     }
 
