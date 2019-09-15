@@ -6,7 +6,6 @@ import com.rodarte.musicapp.models.dao.BandViewDao;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.entity.views.BandView;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,9 +29,6 @@ public class BandServiceImpl implements BandService {
 
     @Autowired
     private AlbumDao albumDao;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -194,12 +190,6 @@ public class BandServiceImpl implements BandService {
     @Transactional
     public void deleteBandById(Long id) {
         bandDao.deleteById(id);
-    }
-
-    @Override
-    @Transactional
-    public Integer albumCountByBandId(Long bandId) {
-        return albumDao.countAlbumsByBandId(bandId);
     }
 
     private void updateFields(Band bandToUpdate, Band updatedBand) {

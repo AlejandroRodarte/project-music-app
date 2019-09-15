@@ -3,7 +3,6 @@ package com.rodarte.musicapp.models.controller;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.entity.views.BandView;
 import com.rodarte.musicapp.models.service.BandService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,9 +16,6 @@ public class BandController {
 
     @Autowired
     private BandService bandService;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
