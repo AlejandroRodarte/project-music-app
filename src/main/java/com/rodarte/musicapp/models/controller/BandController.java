@@ -45,8 +45,9 @@ public class BandController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BandDto saveBand(@RequestBody Band band) {
-        return bandService.saveBand(band);
+    public BandView saveBand(@RequestBody Band band) {
+        Band savedBand = bandService.saveBand(band);
+        return bandService.getBand(savedBand.getId());
     }
 
     @PutMapping("/{id}")

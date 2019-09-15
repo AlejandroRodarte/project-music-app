@@ -1,6 +1,5 @@
 package com.rodarte.musicapp.models.service;
 
-import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.entity.views.BandView;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,7 @@ public interface BandService {
 
     BandView getBand(Long id);
 
-    BandDto saveBand(Band band);
+    Band saveBand(Band band);
 
     void deleteBandById(Long id);
 

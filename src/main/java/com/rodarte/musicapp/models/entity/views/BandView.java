@@ -3,12 +3,13 @@ package com.rodarte.musicapp.models.entity.views;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "bands_view")
 @Immutable
-public class BandView {
+public class BandView implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,6 +110,21 @@ public class BandView {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    @Override
+    public String toString() {
+        return "BandView{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", originCountry='" + originCountry + '\'' +
+                ", originYear=" + originYear +
+                ", albumCount=" + albumCount +
+                ", songCount=" + songCount +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                '}';
     }
 
 }

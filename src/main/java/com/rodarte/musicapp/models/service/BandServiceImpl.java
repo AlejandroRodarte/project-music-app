@@ -3,7 +3,6 @@ package com.rodarte.musicapp.models.service;
 import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.dao.BandViewDao;
-import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.entity.views.BandView;
@@ -84,18 +83,28 @@ public class BandServiceImpl implements BandService {
 
     @Override
     @Transactional
-    public BandDto saveBand(Band band) {
+    public Band saveBand(Band band) {
+
+        List<Long> albumIds = band.getAlbums() != null ? band.getAlbums().stream().map(Album::getId).collect(Collectors.toList()) : new ArrayList<>();
 
         List<Album> albums = new ArrayList<>();
 
-        for (Long id : band.getAlbums().stream().map(Album::getId).collect(Collectors.toList())) {
-            Album album = albumDao.findById(id).get();
+        for (Long albumId : albumIds) {
+            Album album = albumDao.findById(albumId).orElse(null);
             albums.add(album);
         }
 
         band.setAlbums(albums);
 
-        return modelMapper.map(bandDao.save(band), BandDto.class);
+        Band savedBand = bandDao.save(band);
+
+        for (Long albumId : albumIds) {
+            Album album = albumDao.findById(albumId).orElse(null);
+            album.setBand(savedBand);
+            albumDao.save(album);
+        }
+
+        return savedBand;
 
     }
 

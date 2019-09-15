@@ -5,7 +5,7 @@ CREATE OR REPLACE VIEW bands_view AS
 		band_album_count_view.id AS id,
 		name,
 		image_path,
-		country, 
+		origin_country, 
 		origin_year, 
 		album_count, 
 		song_count,
@@ -13,7 +13,7 @@ CREATE OR REPLACE VIEW bands_view AS
         updated_at
     FROM 
 		band_album_count_view 
-    INNER JOIN 
+    LEFT JOIN 
 		band_song_count_view 
     ON 
 		band_album_count_view.id = band_song_count_view.id;
