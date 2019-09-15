@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface AlbumDao extends JpaRepository<Album, Long> {
 
     @Query(value = "SELECT COUNT(*) FROM albums WHERE band_id = :bandId", nativeQuery = true)
@@ -22,5 +24,7 @@ public interface AlbumDao extends JpaRepository<Album, Long> {
         @Param("bandId") Long bandId,
         Pageable pageable
     );
+
+    List<Album> findByBandId(Long bandId);
 
 }

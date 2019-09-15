@@ -1,6 +1,5 @@
 package com.rodarte.musicapp.models.controller;
 
-import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.entity.views.BandView;
 import com.rodarte.musicapp.models.service.BandService;
@@ -52,13 +51,9 @@ public class BandController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public BandDto updateBand(@RequestBody Band updatedBand, @PathVariable Long id) {
-
-//        BandDto bandToUpdate = bandService.getBand(id);
-//
-//        updateBand(bandToUpdate, updatedBand);
-
-        return null;
+    public BandView updateBand(@RequestBody Band updatedBand, @PathVariable Long id) {
+        Band savedBand = bandService.updateBand(updatedBand, id);
+        return bandService.getBand(savedBand.getId());
 
     }
 
@@ -66,26 +61,6 @@ public class BandController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBand(@PathVariable Long id) {
         bandService.deleteBandById(id);
-    }
-
-    private void updateBand(BandDto bandToUpdate, Band updatedBand) {
-
-        if (updatedBand.getName() != null) {
-            bandToUpdate.setName(updatedBand.getName());
-        }
-
-        if (updatedBand.getImagePath() != null) {
-            bandToUpdate.setImagePath(updatedBand.getImagePath());
-        }
-
-        if (updatedBand.getOriginCountry() != null) {
-            bandToUpdate.setOriginCountry(updatedBand.getOriginCountry());
-        }
-
-        if (updatedBand.getOriginYear() != null) {
-            bandToUpdate.setOriginYear(updatedBand.getOriginYear());
-        }
-
     }
 
 }

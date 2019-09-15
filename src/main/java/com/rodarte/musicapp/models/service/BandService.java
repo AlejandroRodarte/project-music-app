@@ -23,6 +23,8 @@ public interface BandService {
 
     Band saveBand(Band band);
 
+    Band updateBand(Band band, Long id);
+
     void deleteBandById(Long id);
 
     Integer albumCountByBandId(Long bandId);

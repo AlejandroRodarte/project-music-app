@@ -124,6 +124,74 @@ public class BandServiceImpl implements BandService {
 
     @Override
     @Transactional
+    public Band updateBand(Band band, Long id) {
+
+        Optional<Band> dbBand = bandDao.findById(id);
+
+        if (dbBand.isEmpty()) {
+            throw new RuntimeException("Band not found. Aborting.");
+        }
+
+        List<Album> dbBandAlbums = albumDao.findByBandId(id);
+
+        List<Long> albumsToDelete = dbBandAlbums.stream().map(Album::getId).collect(Collectors.toList());
+        List<Long> albumsToAdd = band.getAlbums().stream().map(Album::getId).collect(Collectors.toList());
+
+        for (int i = 0; i < albumsToDelete.size(); i++) {
+
+            for (int j = 0; j < albumsToAdd.size(); j++) {
+
+                if (albumsToDelete.get(i).equals(albumsToAdd.get(j))) {
+                    albumsToAdd.remove(j);
+                    albumsToDelete.remove(i);
+                    i--;
+                    break;
+                }
+
+            }
+
+        }
+
+        updateFields(dbBand.get(), band);
+
+        for (Long albumId : albumsToAdd) {
+
+            Optional<Album> album = albumDao.findById(albumId);
+
+            if (album.isEmpty()) {
+                throw new RuntimeException("Album not found. Operation cancelled.");
+            }
+
+            if (album.get().getBand() != null) {
+                throw new RuntimeException("Album " + album.get().getName() + " is already associated with a band. Operation cancelled.");
+            }
+
+            dbBandAlbums.add(album.get());
+            album.get().setBand(dbBand.get());
+
+        }
+
+        for (Long albumId : albumsToDelete) {
+
+            Optional<Album> album = albumDao.findById(albumId);
+
+            if (album.isEmpty()) {
+                throw new RuntimeException("Album not found. Operation cancelled.");
+            }
+
+            dbBandAlbums.remove(album.get());
+            album.get().setBand(null);
+
+        }
+
+        dbBand.get().setAlbums(dbBandAlbums);
+
+        return bandDao.save(dbBand.get());
+
+    }
+
+    @Override
+    @Transactional
     public void deleteBandById(Long id) {
         bandDao.deleteById(id);
     }
@@ -132,6 +200,26 @@ public class BandServiceImpl implements BandService {
     @Transactional
     public Integer albumCountByBandId(Long bandId) {
         return albumDao.countAlbumsByBandId(bandId);
+    }
+
+    private void updateFields(Band bandToUpdate, Band updatedBand) {
+
+        if (updatedBand.getName() != null) {
+            bandToUpdate.setName(updatedBand.getName());
+        }
+
+        if (updatedBand.getImagePath() != null) {
+            bandToUpdate.setImagePath(updatedBand.getImagePath());
+        }
+
+        if (updatedBand.getOriginCountry() != null) {
+            bandToUpdate.setOriginCountry(updatedBand.getOriginCountry());
+        }
+
+        if (updatedBand.getOriginYear() != null) {
+            bandToUpdate.setOriginYear(updatedBand.getOriginYear());
+        }
+
     }
 
 }

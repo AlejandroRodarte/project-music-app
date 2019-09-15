@@ -9,10 +9,7 @@ CREATE OR REPLACE VIEW band_album_count_view AS
 		bands.origin_year AS origin_year,
         bands.created_at AS created_at,
         bands.updated_at AS updated_at,
-		CASE
-			WHEN albums.band_id IS NULL THEN 0
-            ELSE COUNT(*)
-		END AS album_count
+        COUNT(albums.band_id) AS album_count
     FROM 
 		bands
 	LEFT JOIN 

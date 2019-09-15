@@ -7,8 +7,8 @@ CREATE OR REPLACE VIEW bands_view AS
 		image_path,
 		origin_country, 
 		origin_year, 
-		album_count, 
-		song_count,
+		IFNULL(band_album_count_view.album_count, 0) AS album_count, 
+		IFNULL(band_song_count_view.song_count, 0) AS song_count,
         created_at,
         updated_at
     FROM 

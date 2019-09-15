@@ -3,10 +3,7 @@ USE music_db;
 CREATE OR REPLACE VIEW band_song_count_view AS 
 	SELECT 
 		bands.id AS id,
-		CASE
-			WHEN songs.album_id IS NULL THEN 0
-            ELSE COUNT(*)
-		END AS song_count
+		COUNT(songs.album_id) AS song_count
     FROM 
 		bands
 	LEFT JOIN 
@@ -17,6 +14,8 @@ CREATE OR REPLACE VIEW band_song_count_view AS
 		songs
 	ON
 		albums.id = songs.album_id
+	WHERE
+		songs.album_id IS NOT NULL
 	GROUP BY 
 		bands.id;
     
