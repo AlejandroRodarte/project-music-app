@@ -21,7 +21,10 @@ CREATE TABLE IF NOT EXISTS albums (
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW(),
     band_id INT,
-    FOREIGN KEY(band_id) REFERENCES bands(id)
+    CONSTRAINT `fk_band` 
+		FOREIGN KEY (band_id) 
+        REFERENCES bands(id) 
+        ON DELETE SET NULL
 );
 
 CREATE TABLE songs (
