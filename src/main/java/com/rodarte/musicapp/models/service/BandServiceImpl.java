@@ -78,8 +78,8 @@ public class BandServiceImpl implements BandService {
 
     @Override
     @Transactional(readOnly = true)
-    public BandDto getBand(Long id) {
-        return modelMapper.map(bandDao.findById(id).get(), BandDto.class);
+    public BandView getBand(Long id) {
+        return bandViewDao.findById(id).orElse(null);
     }
 
     @Override

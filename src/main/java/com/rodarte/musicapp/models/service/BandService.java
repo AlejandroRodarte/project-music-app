@@ -20,7 +20,7 @@ public interface BandService {
         List<String> songRange
     );
 
-    BandDto getBand(Long id);
+    BandView getBand(Long id);
 
     BandDto saveBand(Band band);
 

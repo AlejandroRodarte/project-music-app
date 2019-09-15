@@ -39,15 +39,8 @@ public class BandController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BandDto getBand(@PathVariable Long id) {
-
-        BandDto band = bandService.getBand(id);
-
-        Integer albumCount = bandService.albumCountByBandId(id);
-        band.setAlbumCount(albumCount);
-
-        return band;
-
+    public BandView getBand(@PathVariable Long id) {
+        return bandService.getBand(id);
     }
 
     @PostMapping
@@ -60,11 +53,11 @@ public class BandController {
     @ResponseStatus(HttpStatus.CREATED)
     public BandDto updateBand(@RequestBody Band updatedBand, @PathVariable Long id) {
 
-        BandDto bandToUpdate = bandService.getBand(id);
+//        BandDto bandToUpdate = bandService.getBand(id);
+//
+//        updateBand(bandToUpdate, updatedBand);
 
-        updateBand(bandToUpdate, updatedBand);
-
-        return bandService.saveBand(modelMapper.map(bandToUpdate, Band.class));
+        return null;
 
     }
 
