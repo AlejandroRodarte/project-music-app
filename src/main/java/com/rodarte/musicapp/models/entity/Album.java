@@ -1,18 +1,12 @@
 package com.rodarte.musicapp.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "albums")
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = "id"
-)
 public class Album implements Serializable {
 
     @Id
@@ -38,6 +32,9 @@ public class Album implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
     @JoinColumn(name = "band_id")
     private Band band;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "album")
+    private List<Song> songs;
 
     @PrePersist
     public void prePersist() {
@@ -112,6 +109,14 @@ public class Album implements Serializable {
 
     public void setBand(Band band) {
         this.band = band;
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(List<Song> songs) {
+        this.songs = songs;
     }
 
     @Override
