@@ -3,7 +3,7 @@ USE music_db;
 CREATE OR REPLACE VIEW band_song_count_view AS 
 	SELECT 
 		bands.id AS id,
-		COUNT(songs.album_id) AS song_count
+		COUNT(songs.id) AS song_count
     FROM 
 		bands
 	LEFT JOIN 

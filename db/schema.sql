@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS albums (
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW(),
     band_id INT,
-    CONSTRAINT `fk_band` 
+    CONSTRAINT fk_band 
 		FOREIGN KEY (band_id) 
         REFERENCES bands(id) 
-        ON DELETE SET NULL
+        ON DELETE CASCADE
 );
 
 CREATE TABLE songs (
@@ -35,7 +35,10 @@ CREATE TABLE songs (
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP ON UPDATE NOW(),
     album_id INT,
-    FOREIGN KEY (album_id) REFERENCES albums(id)
+    CONSTRAINT `fk_album` 
+		FOREIGN KEY (album_id) 
+        REFERENCES albums(id) 
+        ON DELETE CASCADE
 );
 
 CREATE TABLE song_details (
