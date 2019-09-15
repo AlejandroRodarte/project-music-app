@@ -1,11 +1,11 @@
 package com.rodarte.musicapp.models.controller;
 
 import com.rodarte.musicapp.models.dto.AlbumDto;
-import com.rodarte.musicapp.models.dto.AlbumsDto;
 import com.rodarte.musicapp.models.entity.Album;
+import com.rodarte.musicapp.models.entity.views.AlbumView;
 import com.rodarte.musicapp.models.service.AlbumService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,29 +15,27 @@ import java.util.List;
 @RequestMapping("/api/albums")
 public class AlbumController {
 
-
     @Autowired
     private AlbumService albumService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public AlbumsDto getAlbums(
+    public Page<AlbumView> getAlbums(
         @RequestParam Integer page,
         @RequestParam Integer size,
         @RequestParam String sort,
         @RequestParam(required = false) String name,
         @RequestParam(required = false) List<String> yearRange,
-        @RequestParam(required = false) String bandId
+        @RequestParam(required = false) String bandId,
+        @RequestParam(required = false) String bandName,
+        @RequestParam(required = false) List<String> songRange
     ) {
-        return albumService.getAlbums(page, size, sort, name, yearRange, bandId);
+        return albumService.getAlbums(page, size, sort, name, yearRange, bandId, bandName, songRange);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AlbumDto getAlbum(@PathVariable Long id) {
+    public AlbumView getAlbum(@PathVariable Long id) {
         return albumService.getAlbum(id);
     }
 
@@ -51,18 +49,18 @@ public class AlbumController {
     @ResponseStatus(HttpStatus.CREATED)
     public AlbumDto updateAlbum(@RequestBody Album album, @PathVariable Long id) {
 
-        AlbumDto albumDto = albumService.getAlbum(id);
+//        AlbumDto albumDto = albumService.getAlbum(id);
+//
+//        updateAlbum(albumDto, album);
+//
+//        Album mappedAlbum = modelMapper.map(albumDto, Album.class);
+//
+//        if (album.getBand() != null) {
+//            mappedAlbum.getBand().setId(album.getBand().getId());
+//            return albumService.saveAlbum(mappedAlbum, true);
+//        }
 
-        updateAlbum(albumDto, album);
-
-        Album mappedAlbum = modelMapper.map(albumDto, Album.class);
-
-        if (album.getBand() != null) {
-            mappedAlbum.getBand().setId(album.getBand().getId());
-            return albumService.saveAlbum(mappedAlbum, true);
-        }
-
-        return albumService.saveAlbum(mappedAlbum, false);
+        return null;
 
     }
 

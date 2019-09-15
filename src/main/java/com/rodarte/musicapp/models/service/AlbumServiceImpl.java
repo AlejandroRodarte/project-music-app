@@ -1,12 +1,12 @@
 package com.rodarte.musicapp.models.service;
 
 import com.rodarte.musicapp.models.dao.AlbumDao;
+import com.rodarte.musicapp.models.dao.AlbumViewDao;
 import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.dto.AlbumDto;
-import com.rodarte.musicapp.models.dto.AlbumsDto;
-import com.rodarte.musicapp.models.dto.BandToAlbumDto;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.Band;
+import com.rodarte.musicapp.models.entity.views.AlbumView;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
@@ -30,20 +29,20 @@ public class AlbumServiceImpl implements AlbumService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Override
-    public Integer countAlbumsByBandId(Long bandId) {
-        return albumDao.countAlbumsByBandId(bandId);
-    }
+    @Autowired
+    private AlbumViewDao albumViewDao;
 
     @Override
     @Transactional
-    public AlbumsDto getAlbums(
+    public Page<AlbumView> getAlbums(
         Integer page,
         Integer size,
         String sort,
         String name,
         List<String> yearRange,
-        String bandId
+        String bandId,
+        String bandName,
+        List<String> songRange
     ) {
 
         String[] sortArr = sort.split(":");
@@ -59,32 +58,23 @@ public class AlbumServiceImpl implements AlbumService {
             direction = Sort.Direction.DESC;
         }
 
-        Page<Album> albums = albumDao.findBySearchParams(
+        return albumViewDao.findAllBySearchParams(
             name,
             yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
             yearRange == null ? null : Integer.parseInt(yearRange.get(1)),
             bandId == null ? null : Long.parseLong(bandId),
+            bandName,
+            songRange == null ? null : Integer.parseInt(songRange.get(0)),
+            songRange == null ? null : Integer.parseInt(songRange.get(1)),
             PageRequest.of(page, size, Sort.by(direction, sortParam))
         );
-
-        Boolean hasNext = albums.hasNext();
-        Boolean hasPrevious = albums.hasPrevious();
-
-        List<AlbumDto> albumDtos = albums.stream()
-            .map(album -> {
-                AlbumDto albumDto = modelMapper.map(album, AlbumDto.class);
-                albumDto.setBand(modelMapper.map(album.getBand(), BandToAlbumDto.class));
-                return albumDto;
-            }).collect(Collectors.toList());
-
-        return new AlbumsDto(albumDtos, hasNext, hasPrevious);
 
     }
 
     @Override
     @Transactional
-    public AlbumDto getAlbum(Long id) {
-        return modelMapper.map(albumDao.findById(id).get(), AlbumDto.class);
+    public AlbumView getAlbum(Long id) {
+        return albumViewDao.findById(id).orElse(null);
     }
 
     @Override
