@@ -34,9 +34,7 @@ public class BandController {
         @RequestParam(required = false) List<String> albumRange,
         @RequestParam(required = false) List<String> songRange
     ) {
-
-        return bandService.getCustomBands(page, size, sort, name, country, yearRange, albumRange, songRange);
-
+        return bandService.getBands(page, size, sort, name, country, yearRange, albumRange, songRange);
     }
 
     @GetMapping("/{id}")

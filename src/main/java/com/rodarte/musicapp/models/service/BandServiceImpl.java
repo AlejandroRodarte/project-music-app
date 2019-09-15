@@ -3,7 +3,6 @@ package com.rodarte.musicapp.models.service;
 import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.BandDao;
 import com.rodarte.musicapp.models.dto.BandDto;
-import com.rodarte.musicapp.models.dto.BandsDto;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.Band;
 import com.rodarte.musicapp.models.entity.views.BandView;
@@ -33,50 +32,7 @@ public class BandServiceImpl implements BandService {
 
     @Override
     @Transactional(readOnly = true)
-    public BandsDto getBands(
-        Integer page,
-        Integer size,
-        String sort,
-        String name,
-        String country,
-        List<String> yearRange
-    ) {
-
-        String[] sortArr = sort.split(":");
-
-        String sortParam = sortArr[0];
-        String sortDirection = sortArr[1];
-
-        Sort.Direction direction;
-
-        if (sortDirection.equals("asc")) {
-            direction = Sort.Direction.ASC;
-        } else {
-            direction = Sort.Direction.DESC;
-        }
-
-        Page<Band> bands = bandDao.findBySearchParams(
-            name,
-            country,
-            yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
-            yearRange == null ? null : Integer.parseInt(yearRange.get(1)),
-            PageRequest.of(page, size, Sort.by(direction, sortParam))
-        );
-
-        Boolean hasNext = bands.hasNext();
-        Boolean hasPrevious = bands.hasPrevious();
-
-        List<BandDto> bandDtos = bands.stream()
-                .map(band -> modelMapper.map(band, BandDto.class))
-                .collect(Collectors.toList());
-
-        return new BandsDto(bandDtos, hasNext, hasPrevious);
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<BandView> getCustomBands(
+    public Page<BandView> getBands(
         Integer page,
         Integer size,
         String sort,
@@ -100,7 +56,7 @@ public class BandServiceImpl implements BandService {
             direction = Sort.Direction.DESC;
         }
 
-        Page<BandView> bands = bandDao.customSearch(
+        Page<BandView> bands = bandDao.findAllBySearchParams(
             name,
             country,
             yearRange == null ? null : Integer.parseInt(yearRange.get(0)),

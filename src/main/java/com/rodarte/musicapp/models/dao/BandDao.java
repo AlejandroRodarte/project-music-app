@@ -10,23 +10,12 @@ import org.springframework.data.repository.query.Param;
 
 public interface BandDao extends JpaRepository<Band, Long> {
 
-    @Query(value = "SELECT b FROM Band b WHERE (:name is null OR b.name LIKE :name%) AND " +
-            "(:country is null OR b.originCountry LIKE :country%) AND (:startYear is null OR b.originYear >= :startYear) " +
-            "AND (:endYear is null OR b.originYear <= :endYear)")
-    Page<Band> findBySearchParams(
-        @Param("name") String name,
-        @Param("country") String country,
-        @Param("startYear") Integer startYear,
-        @Param("endYear") Integer endYear,
-        Pageable pageable
-    );
-
     @Query(value = "SELECT b FROM BandView b WHERE (:name is null OR b.name LIKE :name%) AND " +
             "(:country is null OR b.originCountry LIKE :country%) AND (:startYear is null OR b.originYear >= :startYear) " +
             "AND (:endYear is null OR b.originYear <= :endYear) AND (:albumMin is null OR b.albumCount >= :albumMin) " +
             "AND (:albumMax is null OR b.albumCount <= :albumMax) AND (:songMin is null OR b.songCount >= :songMin) " +
             "AND (:songMax is null OR b.songCount <= :songMax)")
-    Page<BandView> customSearch(
+    Page<BandView> findAllBySearchParams(
         @Param("name") String name,
         @Param("country") String country,
         @Param("startYear") Integer startYear,
