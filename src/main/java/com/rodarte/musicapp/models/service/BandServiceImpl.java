@@ -6,6 +6,7 @@ import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.dto.BandsDto;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.Band;
+import com.rodarte.musicapp.models.entity.views.BandView;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,6 +71,48 @@ public class BandServiceImpl implements BandService {
                 .collect(Collectors.toList());
 
         return new BandsDto(bandDtos, hasNext, hasPrevious);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<BandView> getCustomBands(
+        Integer page,
+        Integer size,
+        String sort,
+        String name,
+        String country,
+        List<String> yearRange,
+        List<String> albumRange,
+        List<String> songRange
+    ) {
+
+        String[] sortArr = sort.split(":");
+
+        String sortParam = sortArr[0];
+        String sortDirection = sortArr[1];
+
+        Sort.Direction direction;
+
+        if (sortDirection.equals("asc")) {
+            direction = Sort.Direction.ASC;
+        } else {
+            direction = Sort.Direction.DESC;
+        }
+
+        Page<BandView> bands = bandDao.customSearch(
+            name,
+            country,
+            yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
+            yearRange == null ? null : Integer.parseInt(yearRange.get(1)),
+            albumRange == null ? null : Integer.parseInt(albumRange.get(0)),
+            albumRange == null ? null : Integer.parseInt(albumRange.get(1)),
+            songRange == null ? null : Integer.parseInt(songRange.get(0)),
+            songRange == null ? null : Integer.parseInt(songRange.get(1)),
+            PageRequest.of(page, size, Sort.by(direction, sortParam))
+        );
+
+        return bands;
 
     }
 

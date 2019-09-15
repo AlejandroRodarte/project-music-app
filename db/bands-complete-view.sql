@@ -8,7 +8,9 @@ CREATE OR REPLACE VIEW bands_view AS
 		country, 
 		origin_year, 
 		album_count, 
-		song_count 
+		song_count,
+        created_at,
+        updated_at
     FROM 
 		band_album_count_view 
     INNER JOIN 

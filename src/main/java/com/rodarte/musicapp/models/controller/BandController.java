@@ -1,11 +1,12 @@
 package com.rodarte.musicapp.models.controller;
 
 import com.rodarte.musicapp.models.dto.BandDto;
-import com.rodarte.musicapp.models.dto.BandsDto;
 import com.rodarte.musicapp.models.entity.Band;
+import com.rodarte.musicapp.models.entity.views.BandView;
 import com.rodarte.musicapp.models.service.BandService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,23 +24,18 @@ public class BandController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public BandsDto getBands(
+    public Page<BandView> getBands(
         @RequestParam Integer page,
         @RequestParam Integer size,
         @RequestParam String sort,
         @RequestParam(required = false) String name,
         @RequestParam(required = false) String country,
-        @RequestParam(required = false) List<String> yearRange
+        @RequestParam(required = false) List<String> yearRange,
+        @RequestParam(required = false) List<String> albumRange,
+        @RequestParam(required = false) List<String> songRange
     ) {
 
-        BandsDto bandsDto = bandService.getBands(page, size, sort, name, country, yearRange);
-
-        for (BandDto band : bandsDto.getContent()) {
-            Integer albumCount = bandService.albumCountByBandId(band.getId());
-            band.setAlbumCount(albumCount);
-        }
-
-        return bandsDto;
+        return bandService.getCustomBands(page, size, sort, name, country, yearRange, albumRange, songRange);
 
     }
 
