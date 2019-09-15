@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,22 +86,35 @@ public class BandServiceImpl implements BandService {
     @Transactional
     public Band saveBand(Band band) {
 
-        List<Long> albumIds = band.getAlbums() != null ? band.getAlbums().stream().map(Album::getId).collect(Collectors.toList()) : new ArrayList<>();
-
+        List<Long> albumIds = new ArrayList<>();
         List<Album> albums = new ArrayList<>();
 
+        if (band.getAlbums() != null) {
+            albumIds = band.getAlbums().stream().map(Album::getId).collect(Collectors.toList());
+        }
+
         for (Long albumId : albumIds) {
-            Album album = albumDao.findById(albumId).orElse(null);
-            albums.add(album);
+
+            Optional<Album> album = albumDao.findById(albumId);
+
+            if (album.isEmpty()) {
+                throw new RuntimeException("Album not found. Operation cancelled.");
+            }
+
+            if (album.get().getBand() != null) {
+                throw new RuntimeException("Album " + album.get().getName() + " is already associated with a band. Operation cancelled.");
+            }
+
+            albums.add(album.get());
+
         }
 
         band.setAlbums(albums);
 
         Band savedBand = bandDao.save(band);
 
-        for (Long albumId : albumIds) {
-            Album album = albumDao.findById(albumId).orElse(null);
-            album.setBand(savedBand);
+        for (Album album : albums) {
+            album.setBand(band);
             albumDao.save(album);
         }
 

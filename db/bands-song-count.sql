@@ -18,5 +18,5 @@ CREATE OR REPLACE VIEW band_song_count_view AS
 	ON
 		albums.id = songs.album_id
 	GROUP BY 
-		albums.band_id;
+		bands.id;
     
