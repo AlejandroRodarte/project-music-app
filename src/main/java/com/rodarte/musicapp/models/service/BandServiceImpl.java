@@ -2,6 +2,7 @@ package com.rodarte.musicapp.models.service;
 
 import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.BandDao;
+import com.rodarte.musicapp.models.dao.BandViewDao;
 import com.rodarte.musicapp.models.dto.BandDto;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.Band;
@@ -23,6 +24,9 @@ public class BandServiceImpl implements BandService {
 
     @Autowired
     private BandDao bandDao;
+
+    @Autowired
+    private BandViewDao bandViewDao;
 
     @Autowired
     private AlbumDao albumDao;
@@ -56,7 +60,7 @@ public class BandServiceImpl implements BandService {
             direction = Sort.Direction.DESC;
         }
 
-        Page<BandView> bands = bandDao.findAllBySearchParams(
+        Page<BandView> bands = bandViewDao.findAllBySearchParams(
             name,
             country,
             yearRange == null ? null : Integer.parseInt(yearRange.get(0)),
