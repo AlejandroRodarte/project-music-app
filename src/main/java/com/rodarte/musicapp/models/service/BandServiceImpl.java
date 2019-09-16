@@ -100,19 +100,13 @@ public class BandServiceImpl implements BandService {
             }
 
             albums.add(album.get());
+            album.get().setBand(band);
 
         }
 
         band.setAlbums(albums);
 
-        Band savedBand = bandDao.save(band);
-
-        for (Album album : albums) {
-            album.setBand(band);
-            albumDao.save(album);
-        }
-
-        return savedBand;
+        return bandDao.save(band);
 
     }
 
@@ -148,6 +142,16 @@ public class BandServiceImpl implements BandService {
 
         updateFields(dbBand.get(), band);
 
+        dbBandAlbums = dbBandAlbums.stream().filter(album -> {
+            for (Long albumId : albumsToDelete) {
+                if (album.getId().equals(albumId)) {
+                    album.setBand(null);
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+
         for (Long albumId : albumsToAdd) {
 
             Optional<Album> album = albumDao.findById(albumId);
@@ -162,19 +166,6 @@ public class BandServiceImpl implements BandService {
 
             dbBandAlbums.add(album.get());
             album.get().setBand(dbBand.get());
-
-        }
-
-        for (Long albumId : albumsToDelete) {
-
-            Optional<Album> album = albumDao.findById(albumId);
-
-            if (album.isEmpty()) {
-                throw new RuntimeException("Album not found. Operation cancelled.");
-            }
-
-            dbBandAlbums.remove(album.get());
-            album.get().setBand(null);
 
         }
 

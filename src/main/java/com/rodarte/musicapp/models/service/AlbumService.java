@@ -1,6 +1,5 @@
 package com.rodarte.musicapp.models.service;
 
-import com.rodarte.musicapp.models.dto.AlbumDto;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.views.AlbumView;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,7 @@ public interface AlbumService {
 
     AlbumView getAlbum(Long id);
 
-    AlbumDto saveAlbum(Album album, boolean setBandId);
+    Album saveAlbum(Album album);
 
     void deleteAlbumById(Long id);
 

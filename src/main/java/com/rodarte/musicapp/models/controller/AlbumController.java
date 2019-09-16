@@ -41,8 +41,9 @@ public class AlbumController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AlbumDto saveAlbum(@RequestBody Album album) {
-        return albumService.saveAlbum(album, true);
+    public AlbumView saveAlbum(@RequestBody Album album) {
+        Album savedAlbum = albumService.saveAlbum(album);
+        return albumService.getAlbum(savedAlbum.getId());
     }
 
     @PutMapping("/{id}")
