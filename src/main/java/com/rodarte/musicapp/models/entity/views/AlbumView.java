@@ -4,6 +4,7 @@ import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "albums_view")
@@ -35,6 +36,12 @@ public class AlbumView implements Serializable {
 
     @Column(name = "song_count")
     private Integer songCount;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     public Long getId() {
         return id;
@@ -100,4 +107,19 @@ public class AlbumView implements Serializable {
         this.songCount = songCount;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

@@ -23,6 +23,8 @@ public interface AlbumService {
 
     Album saveAlbum(Album album);
 
+    Album updateAlbum(Album album, Long id);
+
     void deleteAlbumById(Long id);
 
 }

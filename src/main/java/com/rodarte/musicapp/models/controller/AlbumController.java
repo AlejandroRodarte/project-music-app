@@ -1,6 +1,5 @@
 package com.rodarte.musicapp.models.controller;
 
-import com.rodarte.musicapp.models.dto.AlbumDto;
 import com.rodarte.musicapp.models.entity.Album;
 import com.rodarte.musicapp.models.entity.views.AlbumView;
 import com.rodarte.musicapp.models.service.AlbumService;
@@ -48,21 +47,9 @@ public class AlbumController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public AlbumDto updateAlbum(@RequestBody Album album, @PathVariable Long id) {
-
-//        AlbumDto albumDto = albumService.getAlbum(id);
-//
-//        updateAlbum(albumDto, album);
-//
-//        Album mappedAlbum = modelMapper.map(albumDto, Album.class);
-//
-//        if (album.getBand() != null) {
-//            mappedAlbum.getBand().setId(album.getBand().getId());
-//            return albumService.saveAlbum(mappedAlbum, true);
-//        }
-
-        return null;
-
+    public AlbumView updateAlbum(@RequestBody Album album, @PathVariable Long id) {
+        Album savedAlbum = albumService.updateAlbum(album, id);
+        return albumService.getAlbum(savedAlbum.getId());
     }
 
     @DeleteMapping("/{id}")
@@ -70,22 +57,5 @@ public class AlbumController {
     public void deleteAlbum(@PathVariable Long id) {
         albumService.deleteAlbumById(id);
     }
-
-    private void updateAlbum(AlbumDto albumDto, Album album) {
-
-        if (album.getName() != null) {
-            albumDto.setName(album.getName());
-        }
-
-        if (album.getImagePath() != null) {
-            albumDto.setImagePath(album.getImagePath());
-        }
-
-        if (album.getReleaseYear() != null) {
-            albumDto.setReleaseYear(album.getReleaseYear());
-        }
-
-    }
-
 
 }

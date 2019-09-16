@@ -139,6 +139,106 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     @Transactional
+    public Album updateAlbum(Album album, Long id) {
+
+        Optional<Album> dbAlbum = albumDao.findById(id);
+
+        if (dbAlbum.isEmpty()) {
+            throw new RuntimeException("Album not found. Aborting.");
+        }
+
+        updateFields(dbAlbum.get(), album);
+
+        if (album.getBand().getId() != null) {
+
+            if (dbAlbum.get().getBand() == null || !album.getBand().getId().equals(dbAlbum.get().getBand().getId())) {
+
+                Optional<Band> dbBand = bandDao.findById(album.getBand().getId());
+
+                if (dbBand.isEmpty()) {
+                    throw new RuntimeException("Band not found. Aborting.");
+                }
+
+                dbAlbum.get().setBand(dbBand.get());
+                dbBand.get().getAlbums().add(dbAlbum.get());
+
+            }
+
+        } else {
+            dbAlbum.get().setBand(null);
+        }
+
+        List<Song> dbAlbumSongs = songDao.findByAlbumId(id);
+
+        List<Long> songsToDelete = dbAlbumSongs.stream().map(Song::getId).collect(Collectors.toList());
+        List<Long> songsToAdd = album.getSongs().stream().map(Song::getId).collect(Collectors.toList());
+
+        for (int i = 0; i < songsToDelete.size(); i++) {
+
+            for (int j = 0; j < songsToAdd.size(); j++) {
+
+                if (songsToDelete.get(i).equals(songsToAdd.get(j))) {
+                    songsToAdd.remove(j);
+                    songsToDelete.remove(i);
+                    i--;
+                    break;
+                }
+
+            }
+
+        }
+
+        dbAlbumSongs = dbAlbumSongs.stream().filter(song -> {
+            for (Long songId : songsToDelete) {
+                if (songId.equals(song.getId())) {
+                    song.setAlbum(null);
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+
+        for (Long songId : songsToAdd) {
+
+            Optional<Song> song = songDao.findById(songId);
+
+            if (song.isEmpty()) {
+                throw new RuntimeException("Song not found. Aborting.");
+            }
+
+            if (song.get().getAlbum() != null) {
+                throw new RuntimeException("Song " + song.get().getName() + " is already associated with an album.");
+            }
+
+            dbAlbumSongs.add(song.get());
+            song.get().setAlbum(dbAlbum.get());
+
+        }
+
+        dbAlbum.get().setSongs(dbAlbumSongs);
+
+        return albumDao.save(dbAlbum.get());
+
+    }
+
+    private void updateFields(Album dbAlbum, Album album) {
+
+        if (album.getName() != null) {
+            dbAlbum.setName(album.getName());
+        }
+
+        if (album.getImagePath() != null) {
+            dbAlbum.setImagePath(album.getImagePath());
+        }
+
+        if (album.getReleaseYear() != null) {
+            dbAlbum.setReleaseYear(album.getReleaseYear());
+        }
+
+    }
+
+    @Override
+    @Transactional
     public void deleteAlbumById(Long id) {
         albumDao.deleteById(id);
     }

@@ -107,4 +107,16 @@ public class Song implements Serializable {
         this.album = album;
     }
 
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", trackNumber=" + trackNumber +
+                ", duration=" + duration +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
 }
