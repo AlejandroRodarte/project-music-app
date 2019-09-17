@@ -45,4 +45,15 @@ public class SongController {
         return songService.getSong(savedSong.getId());
     }
 
+    @PutMapping("/{id}")
+    public SongView saveSong(@RequestBody Song song, @PathVariable Long id) {
+        Song savedSong = songService.updateSong(song, id);
+        return songService.getSong(savedSong.getId());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteSong(@PathVariable Long id) {
+        songService.deleteSongById(id);
+    }
+
 }

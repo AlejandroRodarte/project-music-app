@@ -27,6 +27,6 @@ public interface SongService {
 
     Song updateSong(Song song, Long id);
 
-    Song deleteSongById(Long id);
+    void deleteSongById(Long id);
 
 }

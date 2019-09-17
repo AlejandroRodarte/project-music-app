@@ -35,7 +35,7 @@ CREATE TABLE songs (
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP ON UPDATE NOW(),
     album_id INT,
-    CONSTRAINT `fk_album` 
+    CONSTRAINT fk_album 
 		FOREIGN KEY (album_id) 
         REFERENCES albums(id) 
         ON DELETE CASCADE
@@ -46,7 +46,10 @@ CREATE TABLE song_details (
     lyrics TEXT NOT NULL,
     youtube_url VARCHAR(255) NOT NULL,
     song_id INT NOT NULL,
-    FOREIGN KEY (song_id) REFERENCES songs(id)
+    CONSTRAINT fk_song 
+		FOREIGN KEY (song_id) 
+        REFERENCES songs(id) 
+        ON DELETE CASCADE
 );
 
 CREATE TABLE artists (

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -88,6 +89,12 @@ public class SongServiceImpl implements SongService {
                 throw new RuntimeException("Album not found. Aborting.");
             }
 
+            for (Integer trackNumber : album.get().getSongs().stream().map(Song::getTrackNumber).collect(Collectors.toList())) {
+                if (song.getTrackNumber().equals(trackNumber)) {
+                    throw new RuntimeException("Song with track number " + trackNumber + " already exists. Aborting.");
+                }
+            }
+
             song.setAlbum(album.get());
             album.get().getSongs().add(song);
 
@@ -100,13 +107,64 @@ public class SongServiceImpl implements SongService {
     @Override
     @Transactional
     public Song updateSong(Song song, Long id) {
-        return null;
+
+        Optional<Song> dbSong = songDao.findById(id);
+
+        if (dbSong.isEmpty()) {
+            throw new RuntimeException("Song not found. Aborting");
+        }
+
+        updateFields(dbSong.get(), song);
+
+        if (song.getAlbum().getId() != null) {
+
+            if (dbSong.get().getAlbum() == null || !song.getAlbum().getId().equals(dbSong.get().getAlbum().getId())) {
+
+                Optional<Album> album = albumDao.findById(song.getAlbum().getId());
+
+                if (album.isEmpty()) {
+                    throw new RuntimeException("Album not found. Aborting");
+                }
+
+                for (Integer trackNumber : album.get().getSongs().stream().map(Song::getTrackNumber).collect(Collectors.toList())) {
+                    if (song.getTrackNumber().equals(trackNumber)) {
+                        throw new RuntimeException("Song with track number " + trackNumber + " already exists. Aborting.");
+                    }
+                }
+
+                dbSong.get().setAlbum(album.get());
+                album.get().getSongs().add(dbSong.get());
+
+            }
+
+        } else {
+            dbSong.get().setAlbum(null);
+        }
+
+        return songDao.save(dbSong.get());
+
     }
 
     @Override
     @Transactional
-    public Song deleteSongById(Long id) {
-        return null;
+    public void deleteSongById(Long id) {
+        songDao.deleteById(id);
+    }
+
+    private void updateFields(Song dbSong, Song song) {
+
+        if (song.getName() != null) {
+            dbSong.setName(song.getName());
+        }
+
+        if (song.getTrackNumber() != null) {
+            dbSong.setTrackNumber(song.getTrackNumber());
+        }
+
+        if (song.getDuration() != null) {
+            dbSong.setDuration(song.getDuration());
+        }
+
     }
 
 }

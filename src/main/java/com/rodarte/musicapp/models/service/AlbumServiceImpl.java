@@ -221,6 +221,12 @@ public class AlbumServiceImpl implements AlbumService {
 
     }
 
+    @Override
+    @Transactional
+    public void deleteAlbumById(Long id) {
+        albumDao.deleteById(id);
+    }
+
     private void updateFields(Album dbAlbum, Album album) {
 
         if (album.getName() != null) {
@@ -235,12 +241,6 @@ public class AlbumServiceImpl implements AlbumService {
             dbAlbum.setReleaseYear(album.getReleaseYear());
         }
 
-    }
-
-    @Override
-    @Transactional
-    public void deleteAlbumById(Long id) {
-        albumDao.deleteById(id);
     }
 
 }
