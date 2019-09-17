@@ -1,5 +1,6 @@
 package com.rodarte.musicapp.models.service;
 
+import com.rodarte.musicapp.models.entity.Song;
 import com.rodarte.musicapp.models.entity.views.SongView;
 import org.springframework.data.domain.Page;
 
@@ -21,5 +22,11 @@ public interface SongService {
     );
 
     SongView getSong(Long id);
+
+    Song saveSong(Song song);
+
+    Song updateSong(Song song, Long id);
+
+    Song deleteSongById(Long id);
 
 }

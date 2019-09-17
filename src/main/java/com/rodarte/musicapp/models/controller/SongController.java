@@ -1,5 +1,6 @@
 package com.rodarte.musicapp.models.controller;
 
+import com.rodarte.musicapp.models.entity.Song;
 import com.rodarte.musicapp.models.entity.views.SongView;
 import com.rodarte.musicapp.models.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,12 @@ public class SongController {
     @GetMapping("/{id}")
     public SongView getSong(@PathVariable Long id) {
         return songService.getSong(id);
+    }
+
+    @PostMapping
+    public SongView saveSong(@RequestBody Song song) {
+        Song savedSong = songService.saveSong(song);
+        return songService.getSong(savedSong.getId());
     }
 
 }

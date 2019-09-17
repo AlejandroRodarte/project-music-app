@@ -1,7 +1,10 @@
 package com.rodarte.musicapp.models.service;
 
+import com.rodarte.musicapp.models.dao.AlbumDao;
 import com.rodarte.musicapp.models.dao.SongDao;
 import com.rodarte.musicapp.models.dao.SongViewDao;
+import com.rodarte.musicapp.models.entity.Album;
+import com.rodarte.musicapp.models.entity.Song;
 import com.rodarte.musicapp.models.entity.views.SongView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,9 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SongServiceImpl implements SongService {
+
+    @Autowired
+    private AlbumDao albumDao;
 
     @Autowired
     private SongDao songDao;
@@ -67,6 +74,39 @@ public class SongServiceImpl implements SongService {
     @Transactional(readOnly = true)
     public SongView getSong(Long id) {
         return songViewDao.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public Song saveSong(Song song) {
+
+        if (song.getAlbum() != null) {
+
+            Optional<Album> album = albumDao.findById(song.getAlbum().getId());
+
+            if (album.isEmpty()) {
+                throw new RuntimeException("Album not found. Aborting.");
+            }
+
+            song.setAlbum(album.get());
+            album.get().getSongs().add(song);
+
+        }
+
+        return songDao.save(song);
+
+    }
+
+    @Override
+    @Transactional
+    public Song updateSong(Song song, Long id) {
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Song deleteSongById(Long id) {
+        return null;
     }
 
 }
