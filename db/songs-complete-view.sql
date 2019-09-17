@@ -1,6 +1,6 @@
 USE music_db;
 
-CREATE OR REPLACE view songs_complete_view AS
+CREATE OR REPLACE VIEW songs_view AS
 	SELECT 
 		songs.id AS id,
 		songs.name AS name,
