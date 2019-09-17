@@ -32,6 +32,9 @@ public class Song implements Serializable {
     @JoinColumn(name = "album_id")
     private Album album;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "song")
+    private SongDetail songDetail;
+
     @PrePersist
     public void prePersist() {
         createdAt = new Date();
@@ -105,6 +108,14 @@ public class Song implements Serializable {
 
     public void setAlbum(Album album) {
         this.album = album;
+    }
+
+    public SongDetail getSongDetail() {
+        return songDetail;
+    }
+
+    public void setSongDetail(SongDetail songDetail) {
+        this.songDetail = songDetail;
     }
 
     @Override
