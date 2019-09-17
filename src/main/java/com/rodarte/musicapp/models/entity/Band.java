@@ -35,6 +35,14 @@ public class Band implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "band")
     private List<Album> albums;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @JoinTable(name = "bands_artists", joinColumns = @JoinColumn(name = "band_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
+    private List<Artist> artists;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @JoinTable(name = "bands_genres", joinColumns = @JoinColumn(name = "band_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genres;
+
     @PrePersist
     public void prePersist() {
         createdAt = new Date();
@@ -117,6 +125,22 @@ public class Band implements Serializable {
 
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
+    }
+
+    public List<Artist> getArtists() {
+        return artists;
+    }
+
+    public void setArtists(List<Artist> artists) {
+        this.artists = artists;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
     @Override

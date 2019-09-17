@@ -39,6 +39,14 @@ public class SongDetail {
         updatedAt = new Date();
     }
 
+    public SongDetail() {
+    }
+
+    public SongDetail(String lyrics, String youtubeUrl) {
+        this.lyrics = lyrics;
+        this.youtubeUrl = youtubeUrl;
+    }
+
     public Long getId() {
         return id;
     }
