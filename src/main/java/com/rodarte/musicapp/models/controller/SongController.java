@@ -1,7 +1,10 @@
 package com.rodarte.musicapp.models.controller;
 
 import com.rodarte.musicapp.models.entity.Song;
+import com.rodarte.musicapp.models.entity.SongDetail;
+import com.rodarte.musicapp.models.entity.views.SongDetailView;
 import com.rodarte.musicapp.models.entity.views.SongView;
+import com.rodarte.musicapp.models.service.SongDetailService;
 import com.rodarte.musicapp.models.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +19,9 @@ public class SongController {
 
     @Autowired
     private SongService songService;
+
+    @Autowired
+    private SongDetailService songDetailService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -39,10 +45,21 @@ public class SongController {
         return songService.getSong(id);
     }
 
+    @GetMapping("/{id}/detail")
+    public SongDetailView getSongDetail(@PathVariable Long id) {
+        return songDetailService.getSongDetail(id);
+    }
+
     @PostMapping
     public SongView saveSong(@RequestBody Song song) {
         Song savedSong = songService.saveSong(song);
         return songService.getSong(savedSong.getId());
+    }
+
+    @PostMapping("/{id}/detail")
+    public SongDetailView saveSongDetail(@RequestBody SongDetail songDetail, @PathVariable Long id) {
+        SongDetail savedSongDetail = songDetailService.saveSongDetail(songDetail, id);
+        return songDetailService.getSongDetail(savedSongDetail.getSong().getId());
     }
 
     @PutMapping("/{id}")
@@ -51,9 +68,20 @@ public class SongController {
         return songService.getSong(savedSong.getId());
     }
 
+    @PutMapping("/{id}/detail")
+    public SongDetailView updateSongDetail(@RequestBody SongDetail songDetail, @PathVariable Long id) {
+        SongDetail savedSongDetail = songDetailService.updateSongDetail(songDetail, id);
+        return songDetailService.getSongDetail(savedSongDetail.getSong().getId());
+    }
+
     @DeleteMapping("/{id}")
     public void deleteSong(@PathVariable Long id) {
         songService.deleteSongById(id);
+    }
+
+    @DeleteMapping("/{id}/detail")
+    public void deleteSongDetail(@PathVariable Long id) {
+        songDetailService.deleteSongDetail(id);
     }
 
 }
