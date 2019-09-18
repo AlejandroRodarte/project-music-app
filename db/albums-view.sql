@@ -11,7 +11,7 @@ CREATE OR REPLACE VIEW albums_view AS
         albums.updated_at AS updated_at,
 		bands.name AS band_name,
 		bands.image_path AS band_image_path,
-		COUNT(songs.id) AS song_count
+		COUNT(DISTINCT songs.id) AS song_count
 	FROM
 		albums 
 	LEFT JOIN 

@@ -16,7 +16,10 @@ public interface BandService {
         String country,
         List<String> yearRange,
         List<String> albumRange,
-        List<String> songRange
+        List<String> songRange,
+        String genre,
+        String artistFirstName,
+        String artistLastName
     );
 
     BandView getBand(Long id);

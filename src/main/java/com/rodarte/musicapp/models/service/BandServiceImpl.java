@@ -40,7 +40,10 @@ public class BandServiceImpl implements BandService {
         String country,
         List<String> yearRange,
         List<String> albumRange,
-        List<String> songRange
+        List<String> songRange,
+        String genre,
+        String artistFirstName,
+        String artistLastName
     ) {
 
         String[] sortArr = sort.split(":");
@@ -65,6 +68,9 @@ public class BandServiceImpl implements BandService {
             albumRange == null ? null : Integer.parseInt(albumRange.get(1)),
             songRange == null ? null : Integer.parseInt(songRange.get(0)),
             songRange == null ? null : Integer.parseInt(songRange.get(1)),
+            genre,
+            artistFirstName,
+            artistLastName,
             PageRequest.of(page, size, Sort.by(direction, sortParam))
         );
 

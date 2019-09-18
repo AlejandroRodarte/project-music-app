@@ -40,6 +40,15 @@ public class BandView implements Serializable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @Column(name = "genre")
+    private String genre;
+
+    @Column(name = "artistFirstName")
+    private String artistFirstName;
+
+    @Column(name = "artistLastName")
+    private String artistLastName;
+
     public Long getId() {
         return id;
     }
@@ -112,6 +121,30 @@ public class BandView implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getArtistFirstName() {
+        return artistFirstName;
+    }
+
+    public void setArtistFirstName(String artistFirstName) {
+        this.artistFirstName = artistFirstName;
+    }
+
+    public String getArtistLastName() {
+        return artistLastName;
+    }
+
+    public void setArtistLastName(String artistLastName) {
+        this.artistLastName = artistLastName;
+    }
+
     @Override
     public String toString() {
         return "BandView{" +
@@ -122,8 +155,11 @@ public class BandView implements Serializable {
                 ", originYear=" + originYear +
                 ", albumCount=" + albumCount +
                 ", songCount=" + songCount +
-                ", created_at=" + createdAt +
-                ", updated_at=" + updatedAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", genre='" + genre + '\'' +
+                ", artistFirstName='" + artistFirstName + '\'' +
+                ", artistLastName='" + artistLastName + '\'' +
                 '}';
     }
 
