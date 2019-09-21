@@ -49,4 +49,12 @@ public class Genre {
         this.bands = bands;
     }
 
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 }

@@ -73,4 +73,14 @@ public class Artist {
         this.bands = bands;
     }
 
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                '}';
+    }
+
 }

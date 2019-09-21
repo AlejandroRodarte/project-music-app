@@ -31,4 +31,9 @@ public interface BandViewDao extends JpaRepository<BandView, Long> {
         Pageable pageable
     );
 
+    @Query(value = "SELECT b from BandView b WHERE b.id = :bandId GROUP BY b.id")
+    BandView findByIdGroupByBandId(
+        @Param("bandId") Long bandId
+    );
+
 }

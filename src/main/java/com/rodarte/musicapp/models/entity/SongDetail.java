@@ -95,4 +95,15 @@ public class SongDetail {
         this.song = song;
     }
 
+    @Override
+    public String toString() {
+        return "SongDetail{" +
+                "id=" + id +
+                ", lyrics='" + lyrics + '\'' +
+                ", youtubeUrl='" + youtubeUrl + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
 }
