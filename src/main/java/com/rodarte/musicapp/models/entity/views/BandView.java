@@ -43,11 +43,17 @@ public class BandView implements Serializable {
     @Column(name = "genre")
     private String genre;
 
-    @Column(name = "artistFirstName")
+    @Column(name = "artist_first_name")
     private String artistFirstName;
 
-    @Column(name = "artistLastName")
+    @Column(name = "artist_last_name")
     private String artistLastName;
+
+    @Column(name = "album_name")
+    private String albumName;
+
+    @Column(name = "song_name")
+    private String songName;
 
     public Long getId() {
         return id;
@@ -145,6 +151,22 @@ public class BandView implements Serializable {
         this.artistLastName = artistLastName;
     }
 
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public String getSongName() {
+        return songName;
+    }
+
+    public void setSongName(String songName) {
+        this.songName = songName;
+    }
+
     @Override
     public String toString() {
         return "BandView{" +
@@ -160,6 +182,8 @@ public class BandView implements Serializable {
                 ", genre='" + genre + '\'' +
                 ", artistFirstName='" + artistFirstName + '\'' +
                 ", artistLastName='" + artistLastName + '\'' +
+                ", albumName='" + albumName + '\'' +
+                ", songName='" + songName + '\'' +
                 '}';
     }
 

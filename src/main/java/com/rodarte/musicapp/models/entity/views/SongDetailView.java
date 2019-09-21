@@ -178,4 +178,25 @@ public class SongDetailView {
         this.bandImagePath = bandImagePath;
     }
 
+    @Override
+    public String toString() {
+        return "SongDetailView{" +
+                "id=" + id +
+                ", lyrics='" + lyrics + '\'' +
+                ", youtubeUrl='" + youtubeUrl + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", songId=" + songId +
+                ", name='" + name + '\'' +
+                ", trackNumber=" + trackNumber +
+                ", duration=" + duration +
+                ", albumId=" + albumId +
+                ", albumName='" + albumName + '\'' +
+                ", albumImagePath='" + albumImagePath + '\'' +
+                ", bandId=" + bandId +
+                ", bandName='" + bandName + '\'' +
+                ", bandImagePath='" + bandImagePath + '\'' +
+                '}';
+    }
+
 }

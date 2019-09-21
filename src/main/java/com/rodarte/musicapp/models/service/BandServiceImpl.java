@@ -49,7 +49,9 @@ public class BandServiceImpl implements BandService {
         List<String> songRange,
         String genre,
         String artistFirstName,
-        String artistLastName
+        String artistLastName,
+        String albumName,
+        String songName
     ) {
 
         String[] sortArr = sort.split(":");
@@ -77,6 +79,8 @@ public class BandServiceImpl implements BandService {
             genre,
             artistFirstName,
             artistLastName,
+            albumName,
+            songName,
             PageRequest.of(page, size, Sort.by(direction, sortParam))
         );
 

@@ -15,7 +15,9 @@ public interface BandViewDao extends JpaRepository<BandView, Long> {
             "AND (:albumMax is null OR b.albumCount <= :albumMax) AND (:songMin is null OR b.songCount >= :songMin) " +
             "AND (:songMax is null OR b.songCount <= :songMax) AND (:genre is null OR b.genre = :genre) " +
             "AND (:artistFirstName is null OR b.artistFirstName LIKE :artistFirstName%) " +
-            "AND (:artistLastName is null OR b.artistLastName LIKE :artistLastName%) GROUP BY b.id")
+            "AND (:artistLastName is null OR b.artistLastName LIKE :artistLastName%) " +
+            "AND (:albumName is null OR b.albumName LIKE :albumName%) AND (:songName is null OR b.songName LIKE :songName%) " +
+            "GROUP BY b.id")
     Page<BandView> findAllBySearchParams(
         @Param("name") String name,
         @Param("country") String country,
@@ -28,6 +30,8 @@ public interface BandViewDao extends JpaRepository<BandView, Long> {
         @Param("genre") String genre,
         @Param("artistFirstName") String artistFirstName,
         @Param("artistLastName") String artistLastName,
+        @Param("albumName") String albumName,
+        @Param("songName") String songName,
         Pageable pageable
     );
 

@@ -122,4 +122,21 @@ public class AlbumView implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "AlbumView{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", releaseYear=" + releaseYear +
+                ", bandId=" + bandId +
+                ", bandName='" + bandName + '\'' +
+                ", bandImagePath='" + bandImagePath + '\'' +
+                ", songCount=" + songCount +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
 }

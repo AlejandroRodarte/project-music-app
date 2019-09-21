@@ -30,9 +30,11 @@ public class BandController {
         @RequestParam(required = false) List<String> songRange,
         @RequestParam(required = false) String genre,
         @RequestParam(required = false) String artistFirstName,
-        @RequestParam(required = false) String artistLastName
+        @RequestParam(required = false) String artistLastName,
+        @RequestParam(required = false) String albumName,
+        @RequestParam(required = false) String songName
     ) {
-        return bandService.getBands(page, size, sort, name, country, yearRange, albumRange, songRange, genre, artistFirstName, artistLastName);
+        return bandService.getBands(page, size, sort, name, country, yearRange, albumRange, songRange, genre, artistFirstName, artistLastName, albumName, songName);
     }
 
     @GetMapping("/{id}")

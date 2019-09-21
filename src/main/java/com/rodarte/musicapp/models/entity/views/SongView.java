@@ -145,4 +145,22 @@ public class SongView implements Serializable {
         this.bandImagePath = bandImagePath;
     }
 
+    @Override
+    public String toString() {
+        return "SongView{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", trackNumber=" + trackNumber +
+                ", duration=" + duration +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", albumId=" + albumId +
+                ", albumName='" + albumName + '\'' +
+                ", albumImagePath='" + albumImagePath + '\'' +
+                ", bandId=" + bandId +
+                ", bandName='" + bandName + '\'' +
+                ", bandImagePath='" + bandImagePath + '\'' +
+                '}';
+    }
+
 }

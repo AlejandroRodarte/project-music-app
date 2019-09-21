@@ -19,7 +19,9 @@ public interface BandService {
         List<String> songRange,
         String genre,
         String artistFirstName,
-        String artistLastName
+        String artistLastName,
+        String albumName,
+        String songName
     );
 
     BandView getBand(Long id);
